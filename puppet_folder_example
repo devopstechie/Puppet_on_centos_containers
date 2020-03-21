@@ -1,0 +1,48 @@
+#FROM MASTER
+
+Move to home dir of puppet 
+
+cd /etc/puppet
+
+First case :
+
+in that we have two folder modules and manifests
+
+create a site.pp file in manifests folder
+
+vi manifests/site.pp
+
+copy below content
+
+node 'puppetagent.qshore.com' {
+        package { 'nano':
+                ensure => latest
+         }
+
+}
+
+
+Second case :
+
+copy below content in manifests/site.pp
+
+node 'puppetagent.qshore.com' {
+       include test_module
+}
+
+create  folder my below command
+mkdir modules/test_module
+mkdir modules/test_module/manifests
+
+create a file and copy below content in modules/test_module/manifests/init.pp
+
+class test_module{
+ package { ['vim','git']:
+                ensure => latest
+         }
+}
+
+
+
+#FROM AGENT
+puppet agent --test
