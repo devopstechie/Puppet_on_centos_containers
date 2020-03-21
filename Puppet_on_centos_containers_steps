@@ -1,6 +1,7 @@
 On your AWS instance install docker 
 Note : I am taking Amazon Ami 2 
 
+Step 1 : 
 #Install and start docker in aws instance
 yum update
 yum install docker -y
@@ -10,11 +11,14 @@ service docker enable
 #create two containers one is puppet master other act as slave
 #taking twocontainers using a stable image devopsil/puppet 
 
+Step 2 :
 docker pull devopsil/puppet 
 
 docker run -it --name puppetmaster -h puppetmaster.qshore.com devopsil/puppet bash
 docker run -it --name puppetagent -h puppetagent.qshore.com devopsil/puppet bash
 
+
+Step 3 :
 In master :
 
 yum update
@@ -29,6 +33,7 @@ vi /etc/hosts
 
 Ping agent from master 
 
+Step 4 :
 
 In agent:
 
@@ -44,6 +49,7 @@ vi /etc/hosts
 
 Ping master from agent
 
+Step 5 :
 
 In Master :
 
@@ -53,6 +59,9 @@ yum install -y puppet-server facter puppet
 vi /etc/puppet/puppet.conf 
 		
 	certname = puppetmaster.qshore.com
+
+Step 6 :
+
 In agent:
 yum install -y facter puppet
 
@@ -61,7 +70,7 @@ vi /etc/puppet/puppet.conf
 	server = puppetmaster.qshore.com
 
 
-
+Step 7 :
 
 In Master :
 
@@ -69,29 +78,31 @@ service puppetmaster status
 service puppetmaster start
 puppet cert list
 
+Step 8: 
 
 In agent:
 
 puppet agent --test --server=puppetmaster.qshore.com --waitforcert=50
 
+Step 9 :
+
 In Master :
 
-Puppet cert sign puppetagent.qshore.com
+puppet cert sign puppetagent.qshore.com
 
 
-Add in /etc/puppet/manifests/site.pp
+vi /etc/puppet/manifests/site.pp
 
-file { “/var/tmp/textfile” :
-
-	ensure => “present”,
-	owner => “root”,
-	group => “root”,
-	mode => “664”,
-	content => “First file of my puppet”,
-
-
+file { '/tmp/textfile':
+        ensure => 'present',
+        owner => 'root',
+        group => 'root',
+        mode => '664',
+        content => 'First file of my puppet',
 }
 
+
+Step 10 :
 
 In agent:
 puppet agent --test 
