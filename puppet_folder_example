@@ -41,6 +41,30 @@ vi modules/test_module/manifests/init.pp
 class test_module{
  package { ['vim','git']:
                 ensure => latest
+         }        
+}
+
+
+
+Third case:
+
+copy below content in manifests/site.pp
+
+node 'puppetagent.qshore.com' {
+       include test_module
+}
+
+create  folder my below command
+mkdir modules/test_module
+mkdir modules/test_module/manifests
+
+create a file and copy below content in modules/test_module/manifests/init.pp
+
+vi modules/test_module/manifests/init.pp
+
+class test_module{
+ package { ['vim','git']:
+                ensure => latest
          }
          
 include test_module::install_java         
