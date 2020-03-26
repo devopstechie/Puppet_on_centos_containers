@@ -36,11 +36,24 @@ mkdir modules/test_module/manifests
 
 create a file and copy below content in modules/test_module/manifests/init.pp
 
+vi modules/test_module/manifests/init.pp
+
 class test_module{
  package { ['vim','git']:
                 ensure => latest
          }
+         
+include test_module::install_java         
 }
+
+
+vi modules/test_module/manifests/install_java.pp
+class test_module::install_java{
+        package { 'java-1.8.0-openjdk-devel':
+                ensure => latest
+         }
+}
+
 
 
 
